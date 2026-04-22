@@ -2,180 +2,153 @@ import React, { useState } from "react";
 
 const practicalsData = [
   {
-    title: "Practical No.10",
-    aim: "Demonstrate Conversion of Data into a Universal Format.",
-    code: `Part 1: Normalize Timestamps in a Log Files.
-cd /home/analyst/lab.support.files/
-ls –l
-[analyst@secOps lab.support.files]$awk 'BEGIN {FS=OFS="|"} {$3=strftime("%c",$3)} {print}' applicationX_in_epoch.log 
-[analyst@secOps lab.support.files]$ nano applicationX_in_epoch.log 
-[analyst@secOps lab.support.files]$ awk 'BEGIN {FS=OFS="|"} {$3=strftime("%c",$3)} {print}' applicationX_in_epoch.log > applicationX_in_human.log 
-[analyst@secOps lab.support.files]$ cat applicationX_in_human.log
+    title: "PRACTICAL 1",
+    aim: "",
+    code: `Part A: FTK (Windows)
+click on the file -> create disk image -> select pendrive -> raw(dd)
 
-Part 2: Normalize Timestamps in an Apache Log File 
-[analyst@secOps lab.support.files]$ cat apache_in_epoch.log 
-[analyst@secOps lab.support.files]$ awk 'BEGIN {FS=OFS=" "} {$4=strftime("%c",$4)} {print}' apache_in_epoch.log 
-[analyst@secOps lab.support.files]$ awk 'BEGIN {FS=OFS=" "} {gsub(/[|]/,"",$4)}{print}{$4=strftime("%c",$4)}{print}' apache_in_epoch.log`,
+------Kali Linux---------
+Part B: Guymager
+sudo apt install guymager
+sudo guymager
+right click pendrive name -> Acquire Image
+
+Part C: dd command line
+sudo df -h
+sudo dd if=/dev/sdb1 of=./Desktop/pendrive_image`,
   },
   {
-    title: "Practical No: 9",
-    aim: "Install and Configure GrayLog on Linux",
-    code: `Part 1: Install Java and Els
-sudo nano /etc/elasticsearch/elasticsearch.yml
-action.auto_create_index: false
-sudo systemctl daemon-reload
-sudo systemctl start elasticsearch
-sudo systemctl enable elasticsearch 
-curl -X GET http://localhost:9200
+    title: "Practical 2",
+    aim: "",
+    code: `Using scalpel (C) --- kali Linux ---
 
-Part 2: Install MongoDB
-sudo apt update
-sudo apt install -y mongodb-server
-sudo systemctl start mongodb
-sudo systemctl enable mongodb
+sudo nano /etc/scalpel/scalpel.conf
+uncomment the filetype ex.jpg,png,etc (file ext. that needs to be recoverd)
 
-Part 4: Install GrayLog Server 
-wget https://packages.graylog2.org/repo/packages/graylog-4.2-repository_latest.deb
-sudo dpkg -i graylog-3.3-repository_latest.deb
-sudo apt update
-sudo apt install -y graylog-server
-pwgen -N 1 -s 96
-sudo gedit /etc/graylog/server/server.conf 
-sudo nano /etc/graylog/server/server.conf 
-echo -n password | sha256sum
-sudo nano /etc/graylog/server/server.conf
+Craving the data → scalpel -c /etc/scalpel/scalpel.conf -o cid pendrive.001      (pendrive is the file that that needs to be recoverd)
 
-Part 5: Setup Graylog web interface 
-sudo gedit /etc/graylog/server/server.conf
-Put http_bind_address = 192.168.0.10:9000 http_external_uri = http://public_ip:9000/ 
-sudo systemctl daemon-reload
-sudo systemctl start graylog-server
-sudo systemctl enable graylog-server
-sudo tail -f /var/log/graylog-server/server.log
-
-Access Graylog 
-http://ip.add.re.ss:9000 type in browser.`,
+ll  -> for summery
+cat audit.txt (this file will be created when we run the ll command)`,
   },
   {
-    title: "Practical No.8",
-    aim: "Install and Configure ELK on Linux.",
-    code: `Part 1: Installing java
-sudo apt update
-sudo apt install default-jre
-java -version
+    title: "Practical 3",
+    aim: "",
+    code: `for this practical you need to download/find Sleuth Kit and go to
+\\CF\\sleuthkit-4.14.0-win32\\bin -> open cmd in this dir
 
-Part 2: Install and Configure the Elasticsearch
-curl -fsSL https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
-echo  "deb https://artifacts.elastic.co/packages/7.x/apt stable  main" | sudo tee -a /etc/apt/sources.list.d/elastic-7.x.list
-sudo apt update
-sudo apt install elasticsearch
-sudo nano /etc/elasticsearch/elasticsearch.yml (Uncomment network.host:localhost http.port:9200)
-sudo systemctl start elasticsearch 
-curl -X GET "localhost:9200"`,
+the file path of this file "Windows_Evidence_SSD_TD.dd" 
+
+fsstat -f ntfs {file_path}
+Using Istat
+
+istat -f ntfs {file_path} 0
+istat -f ntfs {file_path} 1
+istat -f ntfs {file_path} 2
+istat -f ntfs {file_path} 3
+istat -f ntfs {file_path} 4`,
   },
   {
-    title: "Practical No.7",
-    aim: "Install and Run Splunk on Linux.",
-    code: `cd Desktop
-sudo /opt/splunk/bin/splunk enable boot-start 
-(if this gives error then run dpkg command)
-sudo dpkg -i splunk-7.1.1-8f0ead9ec3db-linux-2.6-amd64.deb
+    title: "Practical 4",
+    aim: "",
+    code: `open ftk imager -> file -> obtain protected file
+give the destination file path
+select password recovery and all registry files option
 
-sudo /opt/splunk/bin/splunk enable boot-start
-y
-sudo service splunk start
-sudo service splunk status
+now open autopsy
+during setup (select data source stage) select the logical files
+in data source add the path of the folder created using ftk
 
-Splunk will be started at port 8000. You can access the application via URL http://localhost:8000/. To logged in into the app enter username as "admin" then enter your password. In my case the password is "admin!123"`,
+open the LogicalFileSet
+inside users click on the admin user or other
+once clicked -> NTUSER.DAT file below dropdown will appear
+navigate to this filepath
+ROOT\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\UserAssist
+cheack files inside the userassit folde and cheak for non zero values in count
+click on count and copy any string value 
+go to https://rot13.com/ and paste the copied string`,
   },
   {
-    title: "Practical No.6",
-    aim: "Configure your Linux system to send syslog messages to a syslog server and Read them.",
-    code: `Kali Linux
-sudo apt-get update
-sudo apt-get install rsyslog
-sudo nano /etc/rsyslog.conf
+    title: "Practical 5",
+    aim: "",
+    code: `windows ----
+1.wireshark -> traffic.pcapng
+search http -> post req -> HTML form URL -> form id pass
 
-first ubuntu ip then kali ip 
-@192.168.137.50:514 
-*.* @@192.168.137.50:514
-$ActionQueueFileName queue 
-$ActionQueueMaxDiskSpace 1g 
-$ActionQueueSaveOnShutdown on 
-$ActionQueueType LinkedList 
-$ActionResumeRetryCount -1 
+           --> DNS remote Shell.pcap
+tcp.port == 53
+select any tcp packet -> right click -> follow tcp stream
+remote shell has been established
+	   ---> DNS remote shell.pcap
+in the top dropdown you will see the reports 
 
-Then Save and exit the file 
 
-Ubuntu Linux
-sudo systemctl restart rsyslog
-ls /var/log/
-sudo tail -f /var/log/kali/rsyslogd.log`,
+TCPDump part C (Kali linux)
+
+tcpdump -i eth0 -w ./Desktop/prac5.pcap   {file path of your own}
+open new terminal and ping 8.8.8.8  
+then ctl+c both terminals 
+then cat --> tcpdump -r ./Desktop/prac5.pcap`,
   },
   {
-    title: "Practical No 5",
-    aim: "Create your own syslog Server",
-    code: `All Ubuntu
-sudo systemctl status rsyslog 
-sudo apt-get update 
-sudo apt-get install rsyslog 
-sudo nano /etc/rsyslog.conf
-(uncomment udp tcp lines)
-$template remote-incoming-logs,"/var/log/%HOSTNAME%/%PROGRAMNAME%.log" 
-*.* ?remote-incoming-logs
-sudo systemctl restart rsyslog
-ss -tunelp | grep 514 
-sudo ufw allow 514/tcp 
-sudo ufw allow 514/udp 
-sudo rsyslogd -N1 -f /etc/rsyslog.conf`,
+    title: "Practical 6 (CSI LINUX MACHINE)",
+    aim: "",
+    code: `Part A -> 
+cd /home/csi/Desktop/memdump/volatility/
+python2 vol.py imageinfo -f memdump.mem
+
+Part B ->
+capture the packet use ftk imager
+open -> file -> capture memory -> browse -> desktop -> capture
+
+part C -> (windows software)
+Open Redline → Collect Data (create a standard collector) → Browse → new folder → OK
+Go to File explorer → go to path → RunRedlineAudit run as administrator
+Session folder is created → open AnalysisSession1 →
+Select 2nd option → (I am investigating ...)
+report will be presented/displayed.`,
   },
   {
-    title: "Practical No.4",
-    aim: "nslookup",
-    code: `nslookup
-www.cisco.com`,
+    title: "Practical 7 (Kali Linux)",
+    aim: "",
+    code: `cd ~/mailMeta
+python3 meta.py -f Normal\\ Email\\ Message.eml
+(hit tab for autocomplete after normal)
+
+python3 meta.py -f Suspicious\\ Email\\ Message.eml`,
   },
   {
-    title: "Practical No.2",
-    aim: "Demonstrate the use of Snort and Firewall Rules.",
-    code: `Part 1: Preparing the Virtual Environment 
-[analyst@secOps ~]$ sudo ./lab.support.files/scripts/configure_as_dhcp.sh 
-[analyst@secOps ~]$ sudo ./lab.support.files/scripts/cyberops_extended_topo_no_fw.py
+    title: "Practical 8",
+    aim: "",
+    code: `part A  -->
+browser history examiner
 
-mininet> xterm R1 
-[root@secOps analyst]# ./lab.support.files/scripts/start_snort.sh
+Go to start → Browser History Examiner → Capture History → Select “Capture from thiscomputer” → Next
+Make new folder → Click Capture
 
-mininet> xterm H10 
-[root@secOps analyst]# ./lab.support.files/scripts/mal_server_start.sh
-[root@secOps analyst]# netstat -tunpa 
-
-mininet> xterm R1
-[root@sec0ps analyst]# tail -f /var/log/snort/alert
-
-mininet> xterm H5
-[root@secOps analyst]# curl -O 209.165.202.133:6666/W32.Nimda.Amm.exe 
-
-Part2
-mininet > xterm R1 
-[root@secOps ~]# iptables -L -v 
-[root@secOps ~]# iptables -I FORWARD -p tcp -d 209.165.202.133 --dport 6666 -j DROP
-[root@secOps ~]# iptables -L -v 
-
-mininet> xterm H5
-[root@secOps analyst]# curl -O 209.165.202.133:6666/W32.Nimda.Amm.exe 
-(It should be failed or should not respond)`,
+part B  -->
+Chrome Cache Viewer`,
   },
   {
-    title: "Practical No.1",
-    aim: "Encrypting and Decrypting Data Using OpenSSL.",
-    code: `[analyst@secOps ~]$ cd ./lab.support.files/ 
-[analyst@secOps lab.support.files]$ cat letter_to_grandma.txt
-[analyst@secOps lab.support.files]$ openssl aes-256-cbc -in letter_to_grandma.txt -out message.enc 
-cat message.enc 
-[analyst@secOps lab.support.files]$ openssl aes-256-cbc -a -in letter_to_grandma.txt -out message.enc 
-cat message.enc
-[analyst@secOps lab.support.files]$ openssl aes-256-cbc –a -d -in message.enc -out decrypted_letter.txt
-[analyst@secOps lab.support.files]$ cat decrypted_letter.txt`,
+    title: "Practical 9",
+    aim: "",
+    code: `A -> download TestDisk.win (run as admins...)
+once executed -> select create 
+select the pendrive
+select the intel 
+select advanced
+select partition -> undelete option
+
+Select any file → Shift + c → use arrow key to select and change directory →Enter →press c again to paste
+
+B -> photoRec
+
+execute the exe and select the pendrive
+select fat32
+select other
+
+C -> Recuva
+welcome screen -> next -> all files
+Press Cancel for next popup → now select your Pendrive from dropdown → Click Options → Actions → OK → Now start Scan`,
   },
 ];
 
@@ -214,9 +187,11 @@ export default function Practicals() {
           }}
         >
           <h2 style={{ marginTop: 0, color: "#66b2ff" }}>{prac.title}</h2>
-          <p style={{ color: "#cccccc" }}>
-            <strong style={{ color: "#e0e0e0" }}>Aim:</strong> {prac.aim}
-          </p>
+          {prac.aim && (
+            <p style={{ color: "#cccccc" }}>
+              <strong style={{ color: "#e0e0e0" }}>Aim:</strong> {prac.aim}
+            </p>
+          )}
           <div style={{ position: "relative", marginTop: "15px" }}>
             <button
               onClick={() => handleCopy(prac.code, idx)}
