@@ -171,25 +171,47 @@ export default function Practicals() {
       }}
     >
       <h1
-        style={{ textAlign: "center", marginBottom: "30px", color: "#e0e0e0" }}
+        style={{ textAlign: "center", marginBottom: "30px", color: "#333333" }}
       >
-        SOC Practicals
+        CF Practicals
       </h1>
+
+      <div style={{ marginBottom: "40px", textAlign: "center" }}>
+        <button
+          onClick={() => window.open("/san.pdf", "_blank")}
+          style={{
+            padding: "8px 16px",
+            fontSize: "14px",
+            cursor: "pointer",
+            background: "#0056b3",
+            color: "white",
+            border: "none",
+            borderRadius: "4px",
+            fontWeight: "bold",
+            transition: "background 0.3s",
+          }}
+          onMouseOver={(e) => (e.target.style.background = "#003d82")}
+          onMouseOut={(e) => (e.target.style.background = "#0056b3")}
+        >
+          📄 Open Reference PDF
+        </button>
+      </div>
+
       {practicalsData.map((prac, idx) => (
         <div
           key={idx}
           style={{
-            border: "1px solid #333",
+            border: "1px solid #ccc",
             borderRadius: "8px",
             padding: "20px",
             marginBottom: "20px",
-            background: "#1e1e1e",
+            background: "#f9f9f9",
           }}
         >
-          <h2 style={{ marginTop: 0, color: "#66b2ff" }}>{prac.title}</h2>
+          <h2 style={{ marginTop: 0, color: "#0056b3" }}>{prac.title}</h2>
           {prac.aim && (
-            <p style={{ color: "#cccccc" }}>
-              <strong style={{ color: "#e0e0e0" }}>Aim:</strong> {prac.aim}
+            <p style={{ color: "#555" }}>
+              <strong style={{ color: "#333" }}>Aim:</strong> {prac.aim}
             </p>
           )}
           <div style={{ position: "relative", marginTop: "15px" }}>
@@ -213,8 +235,8 @@ export default function Practicals() {
             </button>
             <pre
               style={{
-                background: "#222",
-                color: "#0f0",
+                background: "#ffffff",
+                color: "#333333",
                 padding: "15px",
                 borderRadius: "6px",
                 overflowX: "auto",
@@ -222,6 +244,7 @@ export default function Practicals() {
                 fontSize: "14px",
                 fontFamily: "monospace",
                 paddingTop: "40px",
+                border: "1px solid #ddd",
               }}
             >
               <code>{prac.code}</code>

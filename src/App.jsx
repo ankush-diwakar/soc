@@ -5,9 +5,9 @@ function App() {
   return (
     <div
       style={{
-        backgroundColor: "#121212",
+        backgroundColor: "#ffffff",
         minHeight: "100vh",
-        color: "#e0e0e0",
+        color: "#333333",
       }}
     >
       <Practicals />
